@@ -97,7 +97,7 @@ A web application built with Django, Python, CSS, HTML, and JavaScript, offering
 ### 4. **Redactor**
    - Automatically redact sensitive information in uploaded documents.
 
-##Technologies Used
+## Technologies Used
 
 | Technology | Purpose |
 | -------- | ------- |
