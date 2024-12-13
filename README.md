@@ -82,4 +82,29 @@ A web application built with Django, Python, CSS, HTML, and JavaScript, offering
    ```
    http://127.0.0.1:8000/
    ```
+## Example Wor
+
+### 1. **AI ChatBot**
+   - Ask questions in the chat interface.
+   - View relevant document pages highlighted for easy answer verification.
+
+### 2. **CSV/PDF Analyser**
+   - Upload a PDF and a CSV file to extract meaningful insights.
+
+### 3. **Sensitivity Score Calculator**
+   - Get a sensitivity score based on defined criteria.
+
+### 4. **Redactor**
+   - Automatically redact sensitive information in uploaded documents.
+
+##Technologies Used
+
+| Technology | Purpose |
+| -------- | ------- |
+| Django & Python	| Backend and server logic | 
+| CSS & HTML & JavaScript | Frontend styling and interactivity |
+| OpenAI | Natural Language Processing (NLP) |
+| Azure Blob Storage	| File storage and management |
+| Document Intelligence | Optical Character Recognition (OCR) |
+| Presidio | Redaction and sensitive data handling |
 
