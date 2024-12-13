@@ -38,8 +38,16 @@ A web application built with Django, Python, CSS, HTML, and JavaScript, offering
 ## Setup and Installation
 
 ### Prerequisites
-1. Python installed on your system.
-2. Clone this repository:
+### 1. **Python installed on your system.**
+### 2. **Clone this repository:**
    ```bash
    git clone https://github.com/your-repo-link.git
+   '''
+### 3. Environment Variables
+Create a .env file in the project root directory.
+Copy the contents of .env.example into .env.
+Fill in the required API keys and endpoints:
+env
+Copy code
+
 
