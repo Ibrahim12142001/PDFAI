@@ -40,14 +40,25 @@ A web application built with Django, Python, CSS, HTML, and JavaScript, offering
 ### Prerequisites
 ### 1. **Python installed on your system.**
 ### 2. **Clone this repository:**
-   ```bash
+   ```
    git clone https://github.com/your-repo-link.git
-   '''
-### 3. Environment Variables
-Create a .env file in the project root directory.
-Copy the contents of .env.example into .env.
-Fill in the required API keys and endpoints:
-env
-Copy code
+   ```
 
+### 3. Environment Variables
+   - Create a .env file in the project root directory.
+   - Copy the contents of .env.example into .env.
+   - Fill in the required API keys and endpoints:
+   ```
+   OPENAI_API_KEY = "your_openai_api_key"
+   OPENAI_API_ENDPOINT = "your_openai_api_endpoint"
+   
+   BLOB_CONNECTION_STR = "your_blob_connection_string"
+   BLOB_CONTAINER_NAME = "your_blob_container_name"
+   
+   openai.api_type = "your_openai_api_type"
+   OPENAI_API_BASE = "your_openai_api_base"
+   
+   DI_API_ENDPOINT = "your_document_intelligence_api_endpoint"
+   DI_API_KEY = "your_document_intelligence_api_key"
+   ```
 
