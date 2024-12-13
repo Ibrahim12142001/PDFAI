@@ -82,7 +82,7 @@ A web application built with Django, Python, CSS, HTML, and JavaScript, offering
    ```
    http://127.0.0.1:8000/
    ```
-## Example Wor
+## Example Workflow
 
 ### 1. **AI ChatBot**
    - Ask questions in the chat interface.
