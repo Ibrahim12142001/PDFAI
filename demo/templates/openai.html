@@ -1,0 +1,481 @@
+{% load bootstrap4 %}
+{% load i18n %}
+{% block subcontent %}
+ 
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>OpenAI Document Analyzer</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet"/>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.bundle.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css"/>
+   
+    <style>
+    body {
+        font-family: Arial, sans-serif;
+        margin: 0;
+        padding: 0;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        background-color: #f4f4f4;
+    }
+    #company-banner {
+        position: absolute;
+        top: 0;
+        left: 0;
+        background-color: white;
+        width: 100%;
+    }
+ 
+    .navbar {
+        background-color: #4CAF50;
+        border: none;
+        margin-top: 65px;
+        margin-left: 0px;
+        margin-right: 0px;
+        width: 100%;
+    }
+    .navbar-brand,
+    .navbar-nav .nav-link {
+        margin-left: 40px;
+        margin-right: 40px;
+        color: #ffffff;
+        transition: color 0.2s;
+    }
+    .navbar-brand:hover,
+    .navbar-nav .nav-link:hover {
+        color: #cccccc;
+    }
+    .navbar-brand {
+        font-size: 1em;
+    }
+    .nav-item + .nav-item {
+        margin-right: 0px;
+    }
+    .nav-item.divider::after {
+ 
+        content: '|';
+        font-size: 21px;
+        size: 50px;
+        color: #ffffff;
+        margin-left: 40px;
+        margin-right: 40px;
+    }
+    .header {
+        font-size: 32px;
+        text-align: center;
+        margin-top: 10px;
+        color: #333;
+        text-align: center;
+
+    }
+    .NAVcontainer{
+
+        margin-left: 15px;
+        margin-right: 0px;
+        display: flex;
+    }
+    .file-upload-wrapper {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            width: 48%;
+            border: 1px solid #ccc;
+            padding: 20px;
+            margin-bottom: 20px;
+            text-align: center;
+            position: relative;
+    }
+        .file-container {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 20px;
+        }
+        .file-upload-message {
+            font-size: 18px;
+            
+        }
+        .file-name, .clear-btn {
+            font-size: 14px;
+            color: green;
+            margin-top: 5px;
+            display: block;
+            text-decoration-line: underline;
+
+        }
+        .checkmark {
+            color: green;
+            font-size: 20px;
+            display: none;
+            margin-top: 5px;
+        }
+        .clear-btn {
+            cursor: pointer;
+            text-decoration: underline;
+            color: #333;
+        }
+        #analyzeButton {
+            padding: 10px 20px;
+            margin-top: 15px;
+            width: 100%;
+        }
+        .form-container {
+            width: 100%;
+        }
+ 
+
+ 
+        .file-upload-wrapper {
+            background-color: #ffffff;
+            border-radius: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            width: 48%;
+            padding: 20px;
+            margin-bottom: 20px;
+            text-align: center;
+            position: relative;
+        }
+ 
+        .file-upload-message {
+            color: #333;
+        }
+ 
+        .btn-primary {
+            background-color:  #4CAF50;
+            border: none;
+        }
+        .btn-primary:hover{
+            background-color:  #246e27;
+            border: none;
+
+        }
+        .btn-primary:disabled{
+            background-color:  #afe4b1;
+            border: none;
+
+        }
+
+        .btn-secondary{
+            background-color: #4CAF50;
+            border: none;
+
+        }
+ 
+        .btn-success {
+            background-color: #4CAF50;
+            border: none;
+
+        }
+        .btn-success:hover{
+            background-color:  #246e27;
+            border: none;
+
+        }
+ 
+        html {
+            height: 100%;
+        }
+ 
+
+        .loader {
+            position: absolute;
+            top: calc(50% - 32px);
+            left: calc(50% - 32px);
+            width: 64px;
+            height: 64px;
+            border-radius: 50%;
+            perspective: 800px;
+        }
+ 
+        .inner {
+            position: absolute;
+            box-sizing: border-box;
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;  
+        }
+ 
+        .inner.one {
+            left: 0%;
+            top: 0%;
+            animation: rotate-one 1s linear infinite;
+            border-bottom: 3px solid #ff0000;
+        }
+ 
+        .inner.two {
+            right: 0%;
+            top: 0%;
+            animation: rotate-two 1s linear infinite;
+            border-right: 3px solid #0021fb;
+        }
+ 
+        .inner.three {
+            right: 0%;
+            bottom: 0%;
+            animation: rotate-three 1s linear infinite;
+            border-top: 3px solid #2cae00;
+        }
+ 
+        .loading-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.7);
+            z-index: 10;
+            display: none;
+            justify-content: center;
+            align-items: center;
+        }
+        #downloadSection {
+            background: #ffffff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+            margin-top: 50px; /* Space from the form or other elements above */
+            width: 100%; /* Take full width to center content correctly */
+            display: flex; /* Use flexbox for centering */
+            justify-content: center; /* Center horizontally */
+            align-items: center; /* Center vertically */
+            flex-direction: column; /* Stack children vertically */
+        }
+        .title-card-desc {
+            margin: 0;
+            padding: 0;
+            font-size: 1.2em;
+            font-weight: bold;
+            color: rgb(0, 0, 0);
+        }
+        #downloadButton{
+            margin-top: 20px;
+
+        }
+        .title-card {
+            background: #ffffff; 
+            color: white;
+            margin: 20px;
+            padding: 20px;
+            border-radius: 8px;
+            text-align: center; 
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+            width: 96%;
+        }
+
+        .title-card-heading {
+            margin: 0;
+            padding: 0;
+            font-size: 2em;
+            font-weight: bold;
+            color: rgb(0, 0, 0);
+        }
+
+ 
+        @keyframes rotate-one {
+            0% {
+                transform: rotateX(35deg) rotateY(-45deg) rotateZ(0deg);
+            }
+            100% {
+                transform: rotateX(35deg) rotateY(-45deg) rotateZ(360deg);
+            }
+        }
+ 
+        @keyframes rotate-two {
+            0% {
+                transform: rotateX(50deg) rotateY(10deg) rotateZ(0deg);
+            }
+            100% {
+                transform: rotateX(50deg) rotateY(10deg) rotateZ(360deg);
+            }
+        }
+ 
+        @keyframes rotate-three {
+            0% {
+                transform: rotateX(35deg) rotateY(55deg) rotateZ(0deg);
+            }
+            100% {
+                transform: rotateX(35deg) rotateY(55deg) rotateZ(360deg);
+            }
+        }
+ 
+    </style>
+</head>
+<body>
+    <div id="company-banner">
+        <img src="{% url 'banner-image' %}" alt="Company Banner" style="max-width: 100%;">
+    </div>
+    <nav class="navbar navbar-expand-lg">
+        <div class="NAVcontainer">
+            <a class="navbar-brand" href="{% url 'home' %}">Home</a>
+            <div class="collapse navbar-collapse" id="navbarNavDropdown">
+                <ul class="navbar-nav mr-auto">
+                    <li class="nav-item divider"></li>
+                    <li class="nav-item">
+                        <a class="navbar-brand" href="{% url 'demo_home' %}">Analyze</a>
+                    </li>
+                    <li class="nav-item divider"></li>
+                    <li class="nav-item">
+                        <a class="navbar-brand" href="{% url 'chat_home' %}">Chat</a>
+                    </li>
+                    <li class="nav-item divider"></li>
+                    <li class="nav-item">
+                        <a class="navbar-brand" href="{% url 'PII' %}" >PII Redactor</a>
+                    </li>
+                    <li class="nav-item divider"></li>
+                    <li class="nav-item">
+                        <a class="navbar-brand" href="{% url 'SSC' %}" >SSC</a>
+                    </li>
+                    <li class="nav-item divider"></li>
+                    <li class="nav-item">
+                        <a class="navbar-brand" href="{% url 'overview' %}" >Help</a>
+                    </li>
+                </ul>
+ 
+            </div>
+        </div>
+    </nav>
+    <div class="container chat-container">
+        <div class="loading-overlay" style="display:none;">
+            <div class="loader">
+                <div class="inner one"></div>
+                <div class="inner two"></div>
+                <div class="inner three"></div>
+            </div>
+        </div>
+        <div class="title-card">
+            <h1 class="title-card-heading">Upload Documents to be Analyzed</h1>
+        </div>
+        <form method="post" enctype="multipart/form-data" class="form-container" id="analysisForm">
+            {% csrf_token %}
+            <div class="file-container">
+                <div class="file-upload-wrapper">
+                    <label for="csvFile" class="file-upload-message">{% trans "Upload CSV File:" %}</label>
+                    <input type="file" name="csv_file" id="csvFile" class="form-control-file" accept=".csv" required hidden>
+                    <label for="csvFile" class="btn btn-secondary">Choose File</label>
+                    <span id="csvFileName" class="file-name"></span>
+                    <i class="fas fa-check checkmark" id="csvCheckmark"></i>
+                    <span class="clear-btn" data-file-type="csv">Clear</span>
+                </div>
+                <div class="file-upload-wrapper">
+                    <label for="pdfFile" class="file-upload-message">{% trans "Upload PDF Document:" %}</label>
+                    <input type="file" name="pdf_file" id="pdfFile" class="form-control-file" accept=".pdf" required hidden>
+                    <label for="pdfFile" class="btn btn-secondary">Choose File</label>
+                    <span id="pdfFileName" class="file-name"></span>
+                    <i class="fas fa-check checkmark" id="pdfCheckmark"></i>
+                    <span class="clear-btn" data-file-type="pdf">Clear</span>
+                </div>
+            </div>
+            <button type="submit" class="btn btn-primary" id="analyzeButton" disabled>{% trans "Analyze" %}</button>
+
+        </form>
+        <!-- This container will allows the downloadsection to ignore its parents constraints -->
+        <div style="display: flex; justify-content: center; width: 100%; align-items: center; flex-direction: column;">
+            <div id="downloadSection" style="display: none;">
+                <h1 id="downloadSection-head" class="title-card-desc" style="display: none;">Your CSV File is Ready!</h1>
+                <a id="downloadButton" class="btn btn-success" href="#" download="file.csv" style="display: none;">Download CSV</a>
+        </div>
+</div>
+
+    </div>
+ 
+    <script>
+        $(document).ready(function() {
+            $('#csvFile').change(function() {
+                handleFileUpload(this, 'csv');
+                checkFiles();
+            });
+       
+            $('#pdfFile').change(function() {
+                handleFileUpload(this, 'pdf');
+                checkFiles();
+            });
+   
+            function handleFileUpload(input, fileType) {
+                var fileName = input.files[0].name;
+                $('#' + fileType + 'FileName').text(fileName);
+                $('#' + fileType + 'Checkmark').show();
+                validateFile(input, fileType);
+            }
+            $('.clear-btn').on('click', function() {
+                var fileType = $(this).data('fileType');
+                clearFile(fileType);
+            });
+            function clearFile(fileType) {
+                $('#' + fileType + 'File').val('');
+                $('#' + fileType + 'FileName').text('');
+                $('#' + fileType + 'Checkmark').hide();
+                $('#analyzeButton').prop('disabled', true);
+            }
+       
+            function checkFiles() {
+                var csvFile = $('#csvFile').get(0).files.length;
+                var pdfFile = $('#pdfFile').get(0).files.length;
+                $('#analyzeButton').prop('disabled', !(csvFile && pdfFile));
+            }
+       
+            function validateFile(input, expectedType) {
+                var fileName = input.value;
+                var idxDot = fileName.lastIndexOf(".") + 1;
+                var extFile = fileName.substr(idxDot, fileName.length).toLowerCase();
+                if (extFile !== expectedType) {
+                    alert("Only " + expectedType.toUpperCase() + " files are allowed!");
+                    clearFile(expectedType);
+                }
+            }
+   
+            $('.form-container').submit(function(e) {
+                e.preventDefault();
+                $('.loading-overlay').show();
+   
+                var formData = new FormData(this);
+   
+                $.ajax({
+                    url: $(this).attr('action'),
+                    type: 'POST',
+                    data: formData,
+                    contentType: false,
+                    processData: false,
+                    success: function(response, status, xhr) {
+                        $('.loading-overlay').hide();
+                        $('#csvFile').val('');
+                        $('#pdfFile').val('');
+                        $('#csvFileName').text('');
+                        $('#pdfFileName').text('');
+                        $('.checkmark').hide();
+                        $('#analyzeButton').prop('disabled', true);
+                        $('#downloadSection').show();
+
+                        $('#downloadSection-head').show();
+                        $('#downloadButton').show();
+                        var downloadButton = $('#downloadButton');
+                        downloadButton.click(function() {
+                            $(this).hide();
+                            $('#downloadSection').hide();
+
+                            $('#downloadSection-head').hide();
+ 
+                        });
+                        var blob = new Blob([response.csv_content], { type: 'text/csv;charset=utf-8;' });
+                        var downloadUrl = URL.createObjectURL(blob);
+                        $('#downloadButton').attr('href', downloadUrl);
+                        $('#downloadButton').attr('download', response.filename);
+                    },
+                    error: function() {
+                        $('.loading-overlay').hide();
+                        alert('Something went wrong. Please try again.');
+                    }
+                });
+            });
+        });
+    </script>
+   
+   
+</body>
+</html>
+ 
+{% endblock %}

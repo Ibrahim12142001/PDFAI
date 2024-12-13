@@ -1,0 +1,543 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chatbot</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.11.338/pdf.min.js"></script>
+    <title>Chat</title>
+
+    <style>
+    
+        body, h1, h3 input, button {
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+        }
+
+   
+        #company-banner {
+            position: absolute;
+            top: 0;
+            left: 0;
+            background-color: #ffffff;
+            width: 100%;
+        }
+        
+        body {
+            display: flex;
+            flex-direction: column;
+            height: auto; 
+            background-color: #f4f4f4;
+            margin-top: 60px; 
+        }
+        #upload-title{
+            text-align: center;
+            margin-bottom: 0px;
+            margin-top: 22px;
+            align-items: center;
+            text-align: center;
+        }
+        .container {
+            display: flex;
+            width: 100%;
+            margin-top: 20px;
+            height: calc(100vh - 80px);
+        }
+
+        .half-width {
+            flex: 1;
+            overflow-y: auto;
+            margin: 0 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            background: #fff;
+            border-radius: 8px;
+        }
+
+        #pdf-viewer-container {
+            border-right: 1px solid #ccc;
+            align-items: center;
+            text-align: center;
+            justify-content: center;
+            border-radius: 8px;
+            box-sizing: border-box;
+
+        }
+
+        #chat-interface {
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+        }
+
+        #chat-interface h1 {
+            color: #333;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        #chat-container {
+            overflow-y: auto;
+            background-color: #fff;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            padding: 10px;
+            margin-bottom: 20px;
+            display: flex;
+            flex-direction: column;
+            overflow-y: auto;
+            padding: 10px;
+            width: 100%;
+            box-sizing: border-box;
+        }
+
+        .message {
+            display: block;  
+            margin-bottom: 10px;
+            padding: 10px;
+            border-radius: 5px;
+            width: fit-content;
+            max-width: 80%;
+            clear: both;
+        }
+
+        .user-message {
+            background-color: #dcf8c6;
+            justify-content: flex-end;
+            margin-left: auto;
+
+        }
+
+        .openai-message {
+            background-color: #ebebeb;
+        }
+
+        #input-area {
+            display: flex;
+        }
+
+        input[type="text"] {
+            flex: 1;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 20px;
+            margin-right: 10px;
+            outline: none;
+            overflow-y: auto;
+        }
+
+        button {
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 20px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        button:hover {
+            background-color: #45a049;
+        }
+
+        #loading-indicator {
+            text-align: left;
+            margin-bottom: 10px;
+        }
+
+        #token-count {
+            text-align: right;
+            margin-bottom: 10px;
+            color: #666;
+        }
+        #close-btn {
+            top: 0;
+            margin-left: 20px;
+            background-color: green; 
+            color: white;
+            border: none;
+            border-radius: 20px;
+            padding: 10px;
+            cursor: pointer;
+ 
+        }
+        #renderTitle{
+            align-items: center;
+            text-align: center;
+
+        }
+
+        .ring{
+            position:relative;
+            left:7%;
+            transform:translate(-50%,-50%);
+            width:50px;
+            height:50px;
+            background:transparent;
+            border:3px solid #3c3c3c;
+            border-radius:50%;
+            text-align:center;
+            line-height:50px;
+            font-family:sans-serif;
+            font-size:7px;
+            color:#000000;
+            letter-spacing:2px;
+            text-transform:uppercase;
+            text-shadow:0 0 10px #fff000;
+            box-shadow:0 0 20px rgba(0,0,0,.5);
+        }
+        .ring:before{
+            content:'';
+            position:absolute;
+            top:-3px;
+            left:-3px;
+            width:100%;
+            height:100%;
+            border:3px solid transparent;
+            border-top:3px solid #fff000;
+            border-right:3px solid #fff000;
+            border-radius:50%;
+            animation:animateC 2s linear infinite;
+        }
+        span{
+            display:block;
+            position:absolute;
+            top:calc(50% - 2px);
+            left:50%;
+            width:50%;
+            height:4px;
+            background:transparent;
+            transform-origin:left;
+            animation:animate 2s linear infinite;
+        }
+        span:before{
+            content:'';
+            position:absolute;
+            width:16px;
+            height:16px;
+            border-radius:50%;
+            background:#fff000;
+            top:-6px;
+            right:-8px;
+            box-shadow:0 0 20px #fff000;
+        }
+        @keyframes animateC{
+            0%{
+                transform:rotate(0deg);
+            }
+            100%{
+                transform:rotate(360deg);
+            }
+        }
+        @keyframes animate{
+            0%{
+                transform:rotate(45deg);
+            }
+            100%{
+                transform:rotate(405deg);
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Company Banner -->
+    <div id="company-banner">
+        <img src="{% url 'banner-image' %}" alt="Company Banner">
+    </div>
+
+    <!-- Main Container -->
+    <div class="container">
+
+        <!-- PDF Viewer Container -->
+        <div id="pdf-viewer-container" class="half-width">
+            <h1 id="upload-title">Uploaded PDF</h1>
+            <button id="close-btn" style="display: none;">X</button>
+            <h3 id="renderTitle" style="display: none;">Associated Pages</h3>
+            <div id="pdf-rendering-container"></div> 
+        </div>
+
+        <!-- Chat Interface -->
+        <div id="chat-interface" class="half-width">
+            <h1>OpenAI Chatbot</h1>
+            <div id="token-count">Tokens used: 0/100,000</div>
+            <div id="chat-container">
+                <div id="chat-log"></div>
+                <div id="loading-indicator" class="ring" style="display: none;">Thinking<span></span></div>
+            </div>
+            <div id="input-area">
+                <input type="text" id="question-input" placeholder="Ask a question...">
+                <button id="send-button">Send</button>
+            </div>
+        </div>
+    </div>
+
+    <script type="text/javascript">
+    // <--------------------------------------------- Page Rendering Logic --------------------------------------------->
+        // Initializing constants for CSRF token and the URL of the uploaded PDF document.
+        // These constants are essential for secure POST requests and for loading the PDF document, respectively.
+        const csrftoken = '{{ csrf_token }}';
+        // URL of the uploaded PDF, dynamically provided by the Django backend.
+        const uploadedPdfUrl = "{{ uploaded_pdf_url }}";
+        // Global variable to hold the PDF document object once it's loaded.
+        let pdfDocGlobal = null;
+
+        // Load the DOM elements into variables for better calling conventions.
+        const viewerContainer = document.getElementById('pdf-rendering-container');
+        const closeBtn = document.getElementById('close-btn');
+        const renderTitle = document.getElementById("renderTitle");
+
+        /**
+         * Renders all pages of a PDF document.
+         * This is useful for initially displaying the document or when the user chooses to view the entire document.
+         * @param {PDFDocumentProxy} pdfDoc - The PDF document object.
+         */        
+        function renderAllPages(pdfDoc) {
+            viewerContainer.innerHTML = ''; // Clears the PDF viewer container.
+            closeBtn.style.display = 'none'; // Ensures the 'Close' button is hidden.
+            renderTitle.style.display = 'none'; // Ensures the render title is hidden.
+
+            // Loops through each page of the PDF and calls the function to render it.
+            for (let pageNum = 1; pageNum <= pdfDoc.numPages; pageNum++) {
+                renderPage(pdfDoc, pageNum);
+            }
+        }
+
+        /**
+         * Renders specific pages of the PDF document, based on an array of page numbers.
+         * This allows focusing on and displaying only relevant pages to the user's query.
+         * @param {PDFDocumentProxy} pdfDoc - The PDF document object.
+         * @param {Array} pageNumbers - An array of page numbers to render.
+         */
+        function renderSpecificPages(pdfDoc, pageNumbers) {
+            viewerContainer.innerHTML = ''; // Clears the viewer container for specific pages rendering.
+            closeBtn.style.display = 'block'; // Shows the 'Close' button.
+            renderTitle.style.display = 'block'; // Shows the render title.
+
+            // Loops through the array of page numbers and calls the function to render each specified page.
+            pageNumbers.forEach(pageNum => {
+                renderPage(pdfDoc, pageNum);
+            });
+        }
+
+        /**
+         * Renders a single page within the PDF viewer container.
+         * This function is used by both renderAllPages and renderSpecificPages to render individual pages.
+         * @param {PDFDocumentProxy} pdfDoc - The PDF document object.
+         * @param {number} pageNum - The number of the page to render.
+         */
+        function renderPage(pdfDoc, pageNum) {
+            // Adds each page rendering task to the queue to ensure sequential rendering.
+            renderQueue = renderQueue.then(() => pdfDoc.getPage(pageNum).then(page => {
+                // Calculate the witdh and height dynamically so that the page rendring is based on the browser width
+                const viewport = page.getViewport({ scale: 1 });
+                const scale = viewerContainer.clientWidth / viewport.width;
+                const adjustedViewport = page.getViewport({ scale });
+                const canvas = document.createElement('canvas');
+                canvas.height = adjustedViewport.height;
+                canvas.width = adjustedViewport.width;
+                viewerContainer.appendChild(canvas);
+
+                // Renders the page into the canvas context.
+                const ctx = canvas.getContext('2d');
+                const renderContext = { canvasContext: ctx, viewport: adjustedViewport };
+                return page.render(renderContext).promise;
+            }));
+        }
+
+        // Initializes a promise chain to manage the sequential rendering of PDF pages.
+        let renderQueue = Promise.resolve();
+
+        // Loads and displays the PDF document if a URL is provided, using PDF.js library.
+        if (uploadedPdfUrl) {
+            pdfjsLib.getDocument(uploadedPdfUrl).promise.then(function(pdfDoc) {
+                pdfDocGlobal = pdfDoc;
+                renderAllPages(pdfDocGlobal); // Calls the function to render all pages of the loaded PDF document.
+            }).catch(function(error) {
+                console.error("Error loading PDF: ", error); // Logs error if the PDF document fails to load.
+            });
+        }
+
+        // Adds an event listener to the 'Close' button for hiding it and re-rendering all PDF pages.
+        closeBtn.addEventListener('click', () => {
+            closeBtn.style.display = 'none'; // Hides the 'Close' button.
+            renderTitle.style.display = 'none'; // Hides the render title.
+            renderAllPages(pdfDocGlobal); // Renders all pages of the PDF again.
+        });
+
+    // <--------------------------------------------- Chat Logic --------------------------------------------->
+        
+        // Preparing DOM elements for interaction within the chat functionality.
+        const chatLog = document.getElementById('chat-container'); // Container for chat messages.
+        const questionInput = document.getElementById('question-input'); // Input field for user's questions.
+        const sendButton = document.getElementById('send-button'); // Button to initiate sending a message.
+        const loadingIndicator = document.getElementById('loading-indicator'); // Indicator shown during message processing.
+        
+        // Variables to track chat history and the token count for managing API usage, initialized at the start.
+        let chatHistory = [];
+        let tokenCount = 0;
+        
+        // A reference to the current message element being interacted with by the OpenAI response.
+        let currentOpenAIMessageDiv = null;
+
+        /**
+         * Cleans the API response from unnecessary markdown or HTML formatting.
+         * 
+         * @param {string} responseText - The raw response text from the API.
+         * @return {string} The cleaned text.
+         */
+        function cleanApiResponse(responseText) {
+            let cleanText = responseText.replace(/```html/g, "").replace(/```/g, "");
+            return cleanText;
+        }
+
+        /**
+         * Updates the chat log with a new message either from the user or OpenAI.
+         * 
+         * @param {string} role - The role of the sender ('user' or 'openai').
+         * @param {string} text - The message text to be displayed.
+         * @param {boolean} isNewMessage - Flag indicating if this is a new message.
+         * @param {boolean} replaceContent - Flag indicating if existing content should be replaced.
+         */
+        const updateChatLog = (role, text, isNewMessage = false, replaceContent = false) => {
+            const chatLog = document.getElementById('chat-log');
+            
+            // Create a new message div if it's a new message or none exists for the current response.
+            if (!currentOpenAIMessageDiv || isNewMessage) {
+                currentOpenAIMessageDiv = document.createElement('div');
+                currentOpenAIMessageDiv.classList.add('message', role === 'user' ? 'user-message' : 'openai-message');
+                chatLog.appendChild(currentOpenAIMessageDiv);
+            }
+            
+            // Replace or append the message content based on the 'replaceContent' flag.
+            if (replaceContent) {
+                currentOpenAIMessageDiv.innerHTML = text;
+            } else {
+                currentOpenAIMessageDiv.insertAdjacentHTML('beforeend', text);
+            }
+            // Ensure the latest message is visible to the user.
+            chatLog.scrollTop = chatLog.scrollHeight;
+        };
+
+        /**
+         * Function to extract source page numbers from the response content
+         * 
+         * @param {string} text - The full reponse from the AI
+         */
+        function extractSourcePages(responseContent) {
+            const cleanContent = responseContent.replace(/<[^>]+>/g, ''); 
+            const match = cleanContent.match(/Source_page:\s*(.*)/);
+            if (match) {
+                const pagesText = match[1];
+                const pages = pagesText.split(/,\s*/).map(page => parseInt(page)).filter(page => !isNaN(page));
+                return pages;
+            }
+            return [];
+        }
+        // Add Event listener for when the 'Submit' button is clicked 
+        sendButton.addEventListener('click', function() {
+            const question = questionInput.value.trim();
+            // Check if the user actually entered a prompt
+            if (question !== '') {
+                // Disable the submit button until a reponse is generated
+                sendButton.disabled = true;
+                updateChatLog('user', question, true);
+                chatHistory.push({ role: 'user', content: question });
+                questionInput.value = '';
+
+                // Show loading indicator
+                const loadingIndicator = document.getElementById('loading-indicator');
+                loadingIndicator.style.display = 'block';
+                
+                // Sending the user's question to the server via a POST request.
+                fetch('/chatbot/', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRFToken': csrftoken
+                    },
+                    // Appending the ChatHistory. This container users prompt and AI responses 
+                    body: JSON.stringify({ chatHistory: chatHistory })
+                })
+                // Check for errors 
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Network response was not ok');
+                    }
+                    return response.json(); 
+                })
+                .then(data => {
+                    console.log('Message successfully sent', data);
+                    // If the POST request is successful then we initalize the Stream
+                    const eventSource = new EventSource(`/chatbot/`);
+                    isFirstChunk = true;
+                    // Initalize the chunk accumulator 
+                    let response = '';
+                    // This send a GET call to the backend. This should start the streamed AI response
+                    eventSource.onmessage = function(event) {
+                        // Read the returned JSON data
+                        const data = JSON.parse(event.data);
+                        // Error checking for the returned json data
+                        if (data.content && data.content.choices && data.content.choices.length > 0) {
+                            const choice = data.content.choices[0];
+                            
+                            if (choice.delta && choice.delta.content) {
+                                if (isFirstChunk && choice.delta.content.trim() !== '') {
+                                    // The first non-empty chunk of a new message
+                                    isFirstChunk = false;
+                                    updateChatLog('openai', choice.delta.content, true);
+                                    response += choice.delta.content;
+                                } else if (!isFirstChunk) {
+                                    // Subsequent chunks of an existing message
+                                    updateChatLog('openai', choice.delta.content);
+                                    // Accumulate the chucks so that we can actually read the html tags.
+                                    response += choice.delta.content;
+                                    // Replace the content in the chatlog with the formatted text 
+                                    updateChatLog('openai', response, false, true);
+
+                                }
+                            }
+
+                            // If finish_reason is not null, we have reached the end of the complete message
+                            if (choice.finish_reason !== null) {
+                                // The AI responds with HTML markdowns. (Telling it to remove it does not really work)
+                                response = cleanApiResponse(response)
+                                // Once we clean the response, we replace the content of the chat log one final time
+                                updateChatLog('openai', response, false, true);
+                                // Update the chat history with most recent response
+                                chatHistory.push({ role: 'assistant', content: response });
+                                // Reset the the first chuck so that create a new container for the next message
+                                isFirstChunk = true;
+                                // Extract the source pages 
+                                const sourcePages = extractSourcePages(response);
+                                if (sourcePages.length > 0) {
+                                    // Call the rendering function for specific pages
+                                    renderSpecificPages(pdfDocGlobal, sourcePages);
+                                }
+                                sendButton.disabled = false;
+
+                            }
+
+                        }
+                    };
+
+                    eventSource.onerror = function(event) {
+                        // This error should happen after every full response is generated. Since A new stream is created for every new question
+                        console.error('EventSource failed.');
+                        loadingIndicator.style.display = 'none';
+                        eventSource.close();
+                    };
+                })
+                .catch(error => {
+                    console.error('Error:', error); // Log error if the fetch operation fails.
+                    loadingIndicator.style.display = 'none'; // Hide loading indicator on error
+                }); 
+            }
+        });
+
+
+ 
+    </script>
+</body>
+</html>

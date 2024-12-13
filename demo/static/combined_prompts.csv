@@ -1,0 +1,122 @@
+Project ID,"TASK
+Find the Project ID. This information is often found after the phrase: 'CA No.:' and is a sequence of characters containing numbers, uppercase letters, and hyphens.
+---
+OUTPUT STRUCTURE EXAMPLE:
+
+
+Q: CA No.: 2019-NF-PAC-001
+
+
+A: 2019-NF-PAC-001
+
+
+---
+
+
+TASK
+Use the answer structure and output only the Project ID."
+Project Name,"TASK
+Find the Project Name of the document. This information is found after the heading labelled 'SCHEDULE 5' and should be a single phrase description of the central goal described in the document in bold font. Potentially preceded by the phrase: 'Project Title'. Return only the exact sentence from the document."
+Project Description ,"TASK
+Find a Project Description summarizing the contents of the document. This information is found between the headings labelled 'Project Overview' and 'Project Description'. Synthesize a Project Description using 100-150 words with a preference to repeating word for word sentences used in the original document."
+Project Duration,"TASK
+Find the Project Duration. This information is found after the heading labelled 'Contribution Amount' and is always a range of two years . 
+---
+OUTPUT STRUCTURE EXAMPLE:
+
+
+Q: Fiscal Year Amount CNFASAR Cash
+2019-20 $110,055
+2020-21 $170,996
+2021-22 $171,471
+2022-23 $173,856
+
+
+A: 2019-2023
+
+
+Q: Fiscal Year Amount CNFASAR Cash
+2018-19 $110,055
+2019-20 $170,996
+
+
+A: 2018-2020
+---
+TASK
+Use this output structure and return the Project Duration."
+Project Lead Organization,"TASK
+Find the Project Lead Organization. This information is always found after the project ID and before the phrase 'Page 1'. 
+--
+OUTPUT STRUCTURE EXAMPLE:
+Q: CA No .: 20-HSP-PAC -0008  
+ World Fisheries Trust  
+   
+Page 1 of 42 
+A: World Fisheries Trust 
+---
+TASK
+Use this output structure and output only the Lead Organization."
+Project Partners,"TASK
+Find the partner organizations supporting the Lead Project Organization in the planning, design, and implementation of a project. Partners may be listed in a table. Partners may also be mentioned as a 'partner' organization in the text or an organization with which the Lead Project Organization has a working 'relationship'. You should look for the terms 'partner' or 'relationship' or 'collaboration' in the text to identify organizations that should be considered Project Partners. All Indigenous organizations should be considered a Project Partner. Individuals who are land owners should be considered a Project Partner. Individual volunteers should not be considered a Project Partner. Philanthropic programs should not be considered a Project Partner unless explicitly stated to be a partner. Do not include groups under an umbrella organization. Do not return the Lead Project Organization. Return a list of the organizations that should be considered Project Partners. Do not use hyphens or bullets. Use commas to separate list items."
+Policy & Program Connections,"TASK
+Identify the Policy and Programs Connections supported by project activities. You may look at the status of the species that benefit from the project to determine Policy and Program Connections to the project. Species status can be found from the following website: https://species-registry.canada.ca/index-en.html#/species?ranges=British%20Columbia,Yukon&sortBy=taxonomySort&sortDirection=asc&pageSize=100. If a project targets early stewart  sockeye salmon, WCVI Chinook salmon or Yukon Chinook salmon, the Fisheries Act Rebuilding Plans should be identified as a Policy and Program Connection. Use the list of options, do not return options that are not in the list:
+---
+OPTIONS:
+- Species At Risk Act (SARA) Recovery Plans
+- COSEWIC Assessed Populations
+- WSP Implementation
+- Fisheries Act Rebuilding Plans
+- Southern BC Chinook Initiative
+- PSSI
+---
+TASK
+Find and return a list of the Policy & Program Connections associated with the project.  Use commas to separate list items. Explain your reasoning."
+Reporting Fiscal Year,"TASK
+Determine the reporting fiscal year of the project report. This will always be a range of two consecutive years. The reporting years may be found after the heading labelled 'SCHEDULE 7' or it could be extracted from the reporting period information. Return two full years (4 digitis) separated by a hyphen only."
+G&C Cash Contributions ($ CAD),"TASK
+From the 'Other Sources of Support' table, find the total contributions from DFO Funding Sources. The DFO Funding Sources can be identified by the phrase 'Fisheries and Oceans Canada' followed by the G&C Funding Sources previously identified.  
+Return a list of DFO funding sources and the numeric value of their total support."
+"Other Funding Sources/
+Other Cash Contributions ($ CAD)/","TASK
+From the 'Other Sources of Support' table, find the total cash contributions from non-DFO Funding Sources. Do not return the cash support from DFO Funding sources previously outputted. For each of the applicable non-DFO funding source, determine the value of the Cash Contributions. Look for the word 'cash' and an associated numeric value. 
+Return a list of Other Funding Sources and their associated Cash."
+"Other Funding Sources/
+Other In-Kind Contributions ($ CAD)","TASK
+From the 'Other Sources of Support' table, find the total in-kind contributions from non-DFO Funding Sources. If the word 'cash' is not found but there is still a value associated with the funding source, report that value as an In-Kind Contribution. 
+Return a list of Other Funding Sources and the numeric value of their In-kind Contributions."
+"Site Name/
+Latitude in Decimal Degrees/
+Longitude in Decimal Degrees","TASK
+
+Find the locations of where work for the project took place. Project locations are often but are not limited to specific rivers, creeks, lakes, wetlands, and parks. Project locations may also be associated with Latitude and Longitude values.
+
+---
+OUTPUT STRUCTURE EXAMPLE
+
+Q: Location Description   Latitude (decimal degree format (e.g. 43.09057) Longitude (decimal degree format (e.g. -80.16062)   Specific Location (nearest town or city)   Measures Taken (ex. Instream, riparian, upland)   Threats/Impact
+Birk Creek   51.322064 119.899231   Barriere   Instream   Fish Barrier
+Raft River   51.635508 119.976326   Clearwater   Restoration design and plan   off channel habitat access
+A: Birk Creek:  (51.322064, 51.635508),  Raft River: (119.899231, -119.976326)
+---
+TASK
+
+Return a list of project locations and their associated GPS coordinates if it exists."
+Targeted Species,"TASK
+Identify the primary species that the restoration activities in the document will benefit. This information is often located after the phrase 'Targeted Species' or 'Target Species'. They may also be specified in the document where there is discussion of species that benefit from the project. Species may be abbreviated, look for ('AO', 'CH', 'CM', 'CO', 'PK', 'SK'). If the phrase 'Target Species' is not found, simply return the species name that occurs most frequently in the document.,"
+Other Benefitting Species,"TASK
+Identify the other animal species names that benefit from the restoration activities. This information is often located after the phrase 'Benefitting Species'. They may also be specified in the document where there is discussion of other species that benefit from the project. DO NOT output names of species previously returned. Return a list of these benefited species."
+Socio-Economic Outcome (Primary and Secondary),"TASK
+Determine if any socio-economic activities are mentioned in this document. This information is found in Table 5.1 � Performance Measures. Return all relevant activities and their actual associated values from the list of options. 
+---
+OPTIONS:
+- Number of volunteers involved 
+- Number of hours of volunteer time donated
+- Number of schools involved
+- Number of classes involved
+- Number of jobs created
+- Number of employment days created
+- Number of public engagement events
+- Number of people trained
+---
+TASK
+Return all activities referenced at any point in the document from the list of options along with their actual associated values. Do not confuse the planned value with the actual value. The actual value is generally the second number associated with the outcome metric."

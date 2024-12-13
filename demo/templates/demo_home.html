@@ -1,0 +1,158 @@
+{% load static %}
+<!DOCTYPE html>
+ 
+{% load bootstrap4 %}
+{% load i18n %}
+{% block subcontent %}
+ 
+<html>
+<head>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+    <title>Analyzer - Home</title>
+    <style>
+    body {
+        font-family: Arial, sans-serif;
+        margin: 0;
+        padding: 0;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        background-color: #f4f4f4;
+    }
+    #company-banner {
+        position: absolute;
+        top: 0;
+        left: 0;
+        background-color: white;
+        width: 100%;
+    }
+    .NAVcontainer{
+
+    margin-left: 15px;
+    margin-right: 0px;
+    display: flex;
+    }
+    .navbar {
+        background-color: #4CAF50;
+        border: none;
+        margin-top: 65px;
+        margin-left: 0px;
+        margin-right: 0px;
+        width: 100%;
+    }
+    .navbar-brand,
+    .navbar-nav .nav-link {
+        margin-left: 40px;
+        margin-right: 40px;
+        color: #ffffff;
+        transition: color 0.2s;
+    }
+    .navbar-brand:hover,
+    .navbar-nav .nav-link:hover {
+        color: #cccccc;
+    }
+    .navbar-brand {
+        font-size: 1em;
+    }
+    .nav-item + .nav-item {
+        margin-right: 0px;
+    }
+    .nav-item.divider::after {
+ 
+        content: '|';
+        font-size: 21px;
+        size: 50px;
+        color: #ffffff;
+        margin-left: 40px;
+        margin-right: 40px;
+    }
+
+    .subheader {
+        font-size: 20px;
+      
+        margin-top: 40px;
+        color: #333;
+ 
+    }
+    .container{
+        margin-left: 0px;
+        margin-right: 0px;
+    }
+ 
+    .chat-container{
+        margin-top: 30px;
+        text-align: center;
+    }
+
+    .title-card {
+            background: #ffffff; 
+            color: white;
+            margin: 20px;
+            padding: 20px;
+            border-radius: 8px;
+            text-align: center; 
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+            width: 50%;
+        }
+
+        .title-card-heading {
+            margin: 0;
+            padding: 0;
+            font-size: 2em;
+            font-weight: bold;
+            color: rgb(0, 0, 0);
+        }
+    </style>
+ 
+</head>
+<body>
+    <div id="company-banner">
+        <img src="{% url 'banner-image' %}" alt="Company Banner" style="max-width: 100%;">
+    </div>
+    <nav class="navbar navbar-expand-lg">
+        <div class="NAVcontainer">
+            <a class="navbar-brand" href="{% url 'home' %}">Home</a>
+            <div class="collapse navbar-collapse" id="navbarNavDropdown">
+                <ul class="navbar-nav mr-auto">
+                    <li class="nav-item divider"></li>
+                    <li class="nav-item">
+                        <a class="navbar-brand" href="{% url 'demo_home' %}">Analyze</a>
+                    </li>
+                    <li class="nav-item divider"></li>
+                    <li class="nav-item">
+                        <a class="navbar-brand" href="{% url 'chat_home' %}">Chat</a>
+                    </li>
+                    <li class="nav-item divider"></li>
+                    <li class="nav-item">
+                        <a class="navbar-brand" href="{% url 'PII' %}" >PII Redactor</a>
+                    </li>
+                    <li class="nav-item divider"></li>
+                    <li class="nav-item">
+                        <a class="navbar-brand" href="{% url 'SSC' %}" >SSC</a>
+                    </li>
+                    <li class="nav-item divider"></li>
+                    <li class="nav-item">
+                        <a class="navbar-brand" href="{% url 'overview' %}" >Help</a>
+                    </li>
+                </ul>
+ 
+            </div>
+        </div>
+    </nav>
+        <div class="title-card">
+            <h1 class="title-card-heading">CSV/PDF Analyzer</h1>
+        </div>
+        <div class="chat-container">
+        
+        <p class="subheader"><strong>Upload your prompts as a CSV and document as a PDF to get started</strong></p>
+        <a href="{% url 'upload' %}" class="btn-upload">Get Started</a>
+    </div>
+ 
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+</body>
+</html>
+ 
+{% endblock %}

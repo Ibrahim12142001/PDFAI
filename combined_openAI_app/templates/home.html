@@ -1,0 +1,193 @@
+{% load static %}
+<!DOCTYPE html>
+ 
+{% load i18n %}
+{% block subcontent %}
+ 
+<html>
+<head>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src='https://kit.fontawesome.com/a076d05399.js' crossorigin='anonymous'></script>
+    <title>Home</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+    <style>
+    body {
+        font-family: Arial, sans-serif;
+        margin: 0;
+        padding: 0;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        background-color: #f4f4f4;
+    }
+    #company-banner {
+        position: absolute;
+        top: 0;
+        left: 0;
+        background-color: white;
+        width: 100%;
+    }
+ 
+    .navbar {
+        background-color: #4CAF50;
+        border: none;
+        margin-top: 65px;
+        margin-left: 0px;
+        margin-right: 0px;
+        width: 100%;
+    }
+    .navbar-brand,
+    .navbar-nav .nav-link {
+        margin-left: 40px;
+        margin-right: 40px;
+        color: #ffffff;
+        transition: color 0.2s;
+    }
+    .navbar-brand:hover,
+    .navbar-nav .nav-link:hover {
+        color: #cccccc;
+    }
+    .navbar-brand {
+        font-size: 1em;
+    }
+    .nav-item + .nav-item {
+        margin-right: 0px;
+    }
+    .nav-item.divider::after {
+ 
+        content: '|';
+        font-size: 21px;
+        size: 50px;
+        color: #ffffff;
+        margin-left: 40px;
+        margin-right: 40px;
+    }
+ 
+ 
+    .NAVcontainer{
+
+        margin-left: 15px;
+        margin-right: 0px;
+        display: flex;
+    }
+
+
+    .col{
+        margin-top: 80px;
+        background-color: white;
+        padding: 20px;
+        width: calc(50% - 40px); 
+        border-radius: 10px;
+        text-align: center;
+        margin-right: 40px;
+        box-sizing: border-box; 
+    }
+    .col:hover{
+        background-color: rgb(117, 117, 117);
+        cursor: pointer;
+    }
+    .col:last-child {
+        margin-right: 0; 
+    }
+
+    .title-card {
+        background: #4CAF50; 
+        color: rgb(255, 255, 255);
+        margin: 20px;
+        padding: 20px;
+        border-radius: 8px;
+        text-align: center; 
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+        width: 50%;
+    }
+
+    .title-card-heading {
+        margin: 0;
+        padding: 0;
+        font-size: 2em;
+        font-weight: bold;
+        color: rgb(255, 255, 255);
+    }
+    .title-card-desc {
+        margin: 0;
+        padding: 0;
+        font-size: 1.5em;
+        font-weight: bold;
+        color: rgb(255, 255, 255);
+    }
+    </style>
+ 
+</head>
+<body>
+    <div id="company-banner">
+        <img src="{% url 'banner-image' %}" alt="Company Banner" style="max-width: 100%;">
+    </div>
+    <nav class="navbar navbar-expand-lg">
+        <div class="NAVcontainer">
+            <a class="navbar-brand" href="{% url 'home' %}">Home</a>
+            <div class="collapse navbar-collapse" id="navbarNavDropdown">
+                <ul class="navbar-nav mr-auto">
+                    <li class="nav-item divider"></li>
+                    <li class="nav-item">
+                        <a class="navbar-brand" href="{% url 'demo_home' %}">Analyze</a>
+                    </li>
+                    <li class="nav-item divider"></li>
+                    <li class="nav-item">
+                        <a class="navbar-brand" href="{% url 'chat_home' %}">Chat</a>
+                    </li>
+                    <li class="nav-item divider"></li>
+                    <li class="nav-item">
+                        <a class="navbar-brand" href="{% url 'PII' %}" >PII Redactor</a>
+                    </li>
+                    <li class="nav-item divider"></li>
+                    <li class="nav-item">
+                        <a class="navbar-brand" href="{% url 'SSC' %}" >SSC</a>
+                    </li>
+                    <li class="nav-item divider"></li>
+                    <li class="nav-item">
+                        <a class="navbar-brand" href="{% url 'overview' %}" >Help</a>
+                    </li>
+                </ul>
+ 
+            </div>
+        </div>
+    </nav>
+    <div class="title-card">
+        <h1 class="title-card-heading">Welcome to the DFO PSSI OpenAI Portal</h1>
+    </div>
+    <div class="container">
+        <div class="row">
+            <div class="col" onclick="window.location.href='{% url 'demo_home' %}';">
+                <h3>CSV/PDF Analyzer</h3>
+                <p>Engineer specific and detailed promts for Document Analysis</p>
+            </div>
+
+            <div class="col" onclick="window.location.href='{% url 'chat_home' %}';">
+                <h3>PDF Chatbot</h3>
+                <p>Chat live with your document. For more general inquires</p>
+            </div>
+            
+
+        </div>
+        <div class="row">
+            <div class="col" onclick="window.location.href='{% url 'PII' %}';">
+                <h3>PII Redactor</h3>
+                <p>Redact Personally Identifiable Information from an uploaded PDF</p>
+            </div>
+
+            <div class="col" onclick="window.location.href='{% url 'SSC' %}';">
+                <h3>Sensitivity Score Calculator</h3>
+                <p>Check the Sensitivity Score of an uploaded document</p>
+            </div>
+            
+
+        </div>
+    </div>
+ 
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+</body>
+</html>
+ 
+{% endblock %}

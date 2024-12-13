@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Overview</title>
+    <style>
+        body, h1, h2, p {
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+        }
+        
+        body {
+            background-color: #f4f4f4;
+            line-height: 1.6;
+        }
+
+        #company-banner {
+            background-color: #ffffff;
+            width: 100%;
+            padding: 20px 0;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            text-align: center;
+        }
+
+        .content {
+            max-width: 800px;
+            margin: 40px auto;
+            background: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .intro {
+            text-align: center;
+            padding-bottom: 20px;
+            border-bottom: 1px solid #eaeaea;
+        }
+
+        .section {
+            margin-bottom: 20px;
+        }
+
+        h1 {
+            color: #333;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        p {
+            color: #666;
+            font-size: 16px;
+            line-height: 1.6;
+        }
+
+        .button-container {
+            text-align: center;
+            margin-top: 20px;
+        }
+
+        .btn {
+            background-color: #4CAF50;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: background-color 0.3s ease;
+            text-decoration: none;
+        }
+
+        .btn:hover {
+            background-color: #45a049;
+        }
+
+
+        footer {
+            background-color: #333;
+            color: white;
+            text-align: center;
+            padding: 10px 0;
+            position: absolute;
+            bottom: 0;
+            width: 100%;
+        }
+    </style>
+    </head>
+    <body>
+        <div id="company-banner">
+            <h1>Department of Fisheries and Oceans Canada</h1>
+        </div>
+
+    <div class="content">
+        <div class="intro">
+            <h2>Welcome to the Document Chatbot</h2>
+            <p>Experience a new way to interact with your documents. Ask questions, get answers, and find information with ease.</p>
+        </div>
+
+        <div class="section">
+            <h2>How It Works</h2>
+            <p>Simply upload your PDF documents and let our AI-powered chatbot provide you with the insights you need. Whether it's detailed explanations or quick summaries, our chatbot is ready to assist you.</p>
+            <div class="button-container">
+                <a href="{% url 'home' %}" class="btn">Get Started</a>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>Features</h2>
+            <ul>
+                <li>Instant Answers from Uploaded Documents</li>
+                <li>Interactive Chat with OpenAI's GPT</li>
+                <li>PDF Analysis and Relevant Page Display</li>
+                <li>Accessible Anytime, Anywhere</li>
+            </ul>
+        </div>
+
+        <div class="section">
+            <h2>Use Cases</h2>
+            <p>From research and study to contract review and data extraction, our chatbot provides support across various use cases.</p>
+        </div>
+    </div>
+
+    <footer>
+        <p>© Department of Fisheries and Oceans Canada</p>
+    </footer>
+    <script type="text/javascript"></script>
+    </body>
+</html>
