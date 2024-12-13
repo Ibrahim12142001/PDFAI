@@ -67,9 +67,19 @@ A web application built with Django, Python, CSS, HTML, and JavaScript, offering
    ```
    pip install -r requirements.txt
    ```
+### 2. Apply database migrations:
    ```
    python manage.py migrate
    ```
+### 3. Start the development server
    ```
    python manage.py runserver
    ```
+
+## Accessing the Application
+
+### Open your browser and navigate to:
+   ```
+   http://127.0.0.1:8000/
+   ```
+
