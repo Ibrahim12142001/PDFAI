@@ -61,4 +61,15 @@ A web application built with Django, Python, CSS, HTML, and JavaScript, offering
    DI_API_ENDPOINT = "your_document_intelligence_api_endpoint"
    DI_API_KEY = "your_document_intelligence_api_key"
    ```
+## Installation 
 
+### 1. Install the required Python packages:
+   ```
+   pip install -r requirements.txt
+   ```
+   ```
+   python manage.py migrate
+   ```
+   ```
+   python manage.py runserver
+   ```
